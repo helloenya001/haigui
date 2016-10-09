@@ -4,6 +4,7 @@
 
 decision::decision()
 {
+    int test2 = 0;
 	m_accountstate = STATE_NOACCOUNT;
 	m_opernum = 0;
 }
@@ -41,12 +42,12 @@ int decision::judgeEnter(T_OUTPUT_DATA outData)
 		return 0;
 	}
 	
-	//¼ÆËãÍ·´çµ¥Î»
-	//°´ÕÕ1%´´½¨ÕÊ»§
+	//ï¿½ï¿½ï¿½ï¿½Í·ï¿½çµ¥Î»
+	//ï¿½ï¿½ï¿½ï¿½1%ï¿½ï¿½ï¿½ï¿½ï¿½Ê»ï¿½
     int ret = m_create_func(0,m_config.limit*m_config.mu);
 	if (ret == 0)
 	{
-		//1.È¡µÃ×Ê½ð¶î¶È¡£ 2.¼ÆËãÒ»¸öÍ·´ç¿É¹ºÂòµã¹ÉÆ±ÊýÁ¿
+		//1.È¡ï¿½ï¿½ï¿½Ê½ï¿½ï¿½È¡ï¿½ 2.ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Í·ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½Æ±ï¿½ï¿½ï¿½ï¿½
 		account *pAcc = taccount::searchAccount(m_gupid);
 		if (pAcc == NULL)
 		{
@@ -69,16 +70,16 @@ int decision::judgeDealing(account*pAcc, T_OUTPUT_DATA outData)
 
 int decision::judge(T_OUTPUT_DATA outData)
 {
-	/*  1. È·ÈÏ²¢Ë¢ÐÂµ±Ç°×´Ì¬¡£
-	    2. »ùÓÚ×´Ì¬Óëµ±Ç°¹ÉÊÐÐÅÏ¢ÅÐ¶ÏÏÂÒ»²½²Ù×÷
+	/*  1. È·ï¿½Ï²ï¿½Ë¢ï¿½Âµï¿½Ç°×´Ì¬ï¿½ï¿½
+	    2. ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ëµ±Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Ð¶ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	*/
 	account *pAcc = taccount::searchAccount(m_gupid);
-	//ÈëÊÐÅÐ¶Ï
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
 	if (pAcc == NULL)
 	{
 		return judgeEnter(outData);
 	}
-	else //½»Ò×ÅÐ¶Ï
+	else //ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
 	{
 		return judgeDealing(pAcc, outData);
 	}
