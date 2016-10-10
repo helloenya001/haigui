@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include "taccount.h"
 #include "fileproc.h"
 #include "decision.h"
-/*¾ö²ßÕßºÍ²ÙÅÌÊÖ
-  ¾ö²ßÕßdecision£º»ùÓÚÏÖÓĞ¹ÉÊĞĞĞÇéºÍÕÊ»§Í¶×ÊĞÅÏ¢£¬ÅĞ¶ÏÏÂÒ»²½µÄ²Ù×÷
-  ²ÙÅÌÊÖ£º¸ù¾İ¾ö²ßÕßµÄÖ¸Ê¾½øĞĞÕÊ»§Í¶×Ê²Ù×÷¡£
+/*å†³ç­–è€…å’Œæ“ç›˜æ‰‹
+  å†³ç­–è€…decisionï¼šåŸºäºç°æœ‰è‚¡å¸‚è¡Œæƒ…å’Œå¸æˆ·æŠ•èµ„ä¿¡æ¯ï¼Œåˆ¤æ–­ä¸‹ä¸€æ­¥çš„æ“ä½œ
+  æ“ç›˜æ‰‹ï¼šæ ¹æ®å†³ç­–è€…çš„æŒ‡ç¤ºè¿›è¡Œå¸æˆ·æŠ•èµ„æ“ä½œã€‚
 */
 class trader
 {
@@ -16,7 +16,7 @@ public:
 	taccount *m_taccount;
 	fileproc m_fp;
 	fileproc m_logfp;
-	char m_gupid[32];   //¹ÉÆ±id
+	char m_gupid[32];   //è‚¡ç¥¨id
 	decision m_decision;
 protected:
 	int formatdata(char*fl, T_OUTPUT_DATA *pOuteData);

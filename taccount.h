@@ -1,32 +1,32 @@
-#pragma once
+ï»¿#pragma once
 #include "stdafx.h"
 #include "account.h"
 #include <map>
 
-//×ÜÕÊ»§
-//ËùÓĞµÄÊµ¼Ê²Ù×÷ÕÊ»§¶¼»ùÓÚ´ËÕÊ»§´´½¨
+//æ€»å¸æˆ·
+//æ‰€æœ‰çš„å®é™…æ“ä½œå¸æˆ·éƒ½åŸºäºæ­¤å¸æˆ·åˆ›å»º
 class taccount
 {
 private:
 	static taccount *sigtAccount;
 	int init(double tmoney);
-	account* searchAccountL(char*gupID);  //»ùÓÚ¹ÉÆ±ID²éÕÒ¹ÉÆ±²ÖÕÊ»§
+	account* searchAccountL(char*gupID);  //åŸºäºè‚¡ç¥¨IDæŸ¥æ‰¾è‚¡ç¥¨ä»“å¸æˆ·
 public:
 	taccount();
 	~taccount();
 	double totalmoney;
-	double freemoney;//¿ÉÓÃ½ğ¶î
-	double usedmoney;//ÔÚÕË»§ÖĞµÄÒÑÊ¹ÓÃ½ğ¶î
-	map<string, account*> subaccount; //¹ÉÆ±ÕÊ»§
+	double freemoney;//å¯ç”¨é‡‘é¢
+	double usedmoney;//åœ¨è´¦æˆ·ä¸­çš„å·²ä½¿ç”¨é‡‘é¢
+	map<string, account*> subaccount; //è‚¡ç¥¨å¸æˆ·
 public:
 	int addmoney(double money);
 	int deletemoney(double money);
-	int createAccount(char*gupID);  //´´½¨Ò»¸ö¿Õ¹ÉÆ±ÕÊ»§
-	int createAccount(char*gupID, double money);//´´½¨Ò»¸ö´ø½ğ¶îµÄÕÊ»§
-	int createAccount(char*gupID, int percent);//°´ÕÕ½ğ¶î±ÈÀı´´½¨ÕÊ»§¡£(¿ÉÓÃ½ğ¶î+ÒÑÊ¹ÓÃ½ğ¶î£©½øĞĞ±ÈÀı»»Ëã£¬»»ËãºóµÄ½ğ¶î<¿ÉÓÃ½ğ¶îÊ±£¬È¡¿ÉÓÃ½ğ¶î¡£
-	int appendAccount(char*gupID, double moeny);//ÏòÕÊ»§ÖĞ×·¼Ó½ğ¶î¡£
-	int deleteAccount(char*gupID);//É¾³ıÍ¶×ÊÕÊ»§£¬¹é»¹½ğ¶î
-	double getTotalmoney();//»ñÈ¡µ±Ç°½ğ¶î£¬ÕÊ»§ÖĞµÄÒÑÓÃ½ğ¶î+¿ÉÓÃ½ğ¶î
+	int createAccount(char*gupID);  //åˆ›å»ºä¸€ä¸ªç©ºè‚¡ç¥¨å¸æˆ·
+	int createAccount(char*gupID, double money);//åˆ›å»ºä¸€ä¸ªå¸¦é‡‘é¢çš„å¸æˆ·
+	int createAccount(char*gupID, int percent);//æŒ‰ç…§é‡‘é¢æ¯”ä¾‹åˆ›å»ºå¸æˆ·ã€‚(å¯ç”¨é‡‘é¢+å·²ä½¿ç”¨é‡‘é¢ï¼‰è¿›è¡Œæ¯”ä¾‹æ¢ç®—ï¼Œæ¢ç®—åçš„é‡‘é¢<å¯ç”¨é‡‘é¢æ—¶ï¼Œå–å¯ç”¨é‡‘é¢ã€‚
+	int appendAccount(char*gupID, double moeny);//å‘å¸æˆ·ä¸­è¿½åŠ é‡‘é¢ã€‚
+	int deleteAccount(char*gupID);//åˆ é™¤æŠ•èµ„å¸æˆ·ï¼Œå½’è¿˜é‡‘é¢
+	double getTotalmoney();//è·å–å½“å‰é‡‘é¢ï¼Œå¸æˆ·ä¸­çš„å·²ç”¨é‡‘é¢+å¯ç”¨é‡‘é¢
 
 	static taccount* getTaccount(double tmoney) {
 		if (sigtAccount = NULL)

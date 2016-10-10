@@ -1,4 +1,4 @@
-// haigui.cpp : ¶¨Òå¿ØÖÆÌ¨Ó¦ÓÃ³ÌĞòµÄÈë¿Úµã¡£
+ï»¿// haigui.cpp : å®šä¹‰æ§åˆ¶å°åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
 //
 
 #include "stdafx.h"
@@ -16,7 +16,7 @@
 
 
 
-//¶ÁÈ¡²ÎÊıÅäÖÃ
+//è¯»å–å‚æ•°é…ç½®
 int initConig(T_CONFIG *pconfig)
 {
 	pconfig->avgm = DEFAULT_AVGM;
@@ -29,7 +29,7 @@ int initConig(T_CONFIG *pconfig)
 	pconfig->limit = DEFAULT_LIMIT;
 	return 0;
 }
-/* ²ÎÊı£¬´ı´¦ÀíÎÄ¼şÂ·¾¶*/
+/* å‚æ•°ï¼Œå¾…å¤„ç†æ–‡ä»¶è·¯å¾„*/
 int main(int argc, char ** argv)
 {
 
@@ -46,11 +46,11 @@ int main(int argc, char ** argv)
 	*/
 	infile = "E:\\work\\develop\\vc\\haigui\\log1113.csv";
 	outfile = "E:\\work\\develop\\vc\\haigui\\log1113out.csv";
-	//³õÊ¼»¯ÅäÖÃ
+	//åˆå§‹åŒ–é…ç½®
 	printf("init config\n");
 	initConig(&config);
 
-	//mode1 »ù±¾Êı¾İ¼ÆËã
+	//mode1 åŸºæœ¬æ•°æ®è®¡ç®—
 	BaseDataProc(config, infile, outfile);
 	
 

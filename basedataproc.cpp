@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "basedataproc.h"
 #include "stringproc.h"
 
@@ -15,7 +15,7 @@ basedataproc::basedataproc()
 	memset((void*)&m_tn, 0, sizeof(m_tn));
 	for (int i = 0;i < P_NUM;i++)
 	{
-		m_p[i].cur = -1; //µ±Ç°Öµ³õÊ¼»¯Îª0.
+		m_p[i].cur = -1; //å½“å‰å€¼åˆå§‹åŒ–ä¸º0.
 		m_p[i].maxIndex = -1;
 	}
 	m_mintem.cur = -1;
@@ -51,7 +51,7 @@ int basedataproc::init(T_CONFIG config, char* infile,char* outfile)
 		{
 			m_init = 1;
 		}
-		m_p[0].mask = config.pp1+1; //µ±Ç°Öµ²»¼ÆËã£¬±£ÁôÖµÎª n+1ÈÕÊı¾İ
+		m_p[0].mask = config.pp1+1; //å½“å‰å€¼ä¸è®¡ç®—ï¼Œä¿ç•™å€¼ä¸º n+1æ—¥æ•°æ®
 		m_p[1].mask = config.pp2+1;
 		m_mintem.mask = config.rp + 1;
 	}
@@ -59,7 +59,7 @@ int basedataproc::init(T_CONFIG config, char* infile,char* outfile)
 	return 0;
 }
 
-// 20ÈÕNÖµÎªÇ°20ÈÕÃ¿ÈÕTRµÄÇóºÍÆ½¾ù£¬µÚ21ÈÕ¿ªÊ¼°´ÕÕÒÆ¶¯Æ½¾ù½øĞĞ¼ÆËã
+// 20æ—¥Nå€¼ä¸ºå‰20æ—¥æ¯æ—¥TRçš„æ±‚å’Œå¹³å‡ï¼Œç¬¬21æ—¥å¼€å§‹æŒ‰ç…§ç§»åŠ¨å¹³å‡è¿›è¡Œè®¡ç®—
 int basedataproc::ATR(T_ORGIN_DATA Orgind)
 {
 	if (m_tn.dateCount == 0)
@@ -94,18 +94,18 @@ int basedataproc::Min10(double cur)
 	}
 	m_mintem.readnum++;
 	m_mintem.cur++;
-	//Èç¹û´æ´¢Êı¾İÁ¿´ïµ½maskÁ¿, ÆğÊ¼Ë÷Òı++
+	//å¦‚æœå­˜å‚¨æ•°æ®é‡è¾¾åˆ°maské‡, èµ·å§‹ç´¢å¼•++
 	if (m_mintem.mask <= m_mintem.cur)
 	{
 		m_mintem.start++;
 	}
 
 	m_mintem.pinfo[m_mintem.cur % m_mintem.mask] = cur;
-	if (m_mintem.cur < m_mintem.mask - 1)  //Êı¾İ²»×ã£¬ÎŞĞè¼ÆËã
+	if (m_mintem.cur < m_mintem.mask - 1)  //æ•°æ®ä¸è¶³ï¼Œæ— éœ€è®¡ç®—
 	{
 		return -2;
 	}
-	//×î´óÖµË÷ÒıÎŞĞ§Ê±£¬ÖØĞÂ²éÕÒ×îĞ¡Öµ£¬µ±Ç°Öµ²»²ÎÓë¼ÆËã
+	//æœ€å¤§å€¼ç´¢å¼•æ— æ•ˆæ—¶ï¼Œé‡æ–°æŸ¥æ‰¾æœ€å°å€¼ï¼Œå½“å‰å€¼ä¸å‚ä¸è®¡ç®—
 	if ((m_mintem.maxIndex < m_mintem.start) || m_mintem.maxIndex == -1)
 	{
 		for (long j = m_mintem.start;j < m_mintem.cur;j++)
@@ -131,7 +131,7 @@ int basedataproc::Min10(double cur)
 	}
 	return 0;
 }
-//µ±Ç°Öµ²»ÓÃÓÚ¼ÆËã¡£¼ÆËãÇ°nÈÕµÄ×î¸ßÖµ
+//å½“å‰å€¼ä¸ç”¨äºè®¡ç®—ã€‚è®¡ç®—å‰næ—¥çš„æœ€é«˜å€¼
 int basedataproc::updateP( double cur)
 {
 	double maxv = -999999.0;
@@ -148,18 +148,18 @@ int basedataproc::updateP( double cur)
 		}
 		m_p[i].readnum++;
 		m_p[i].cur++;
-		//Èç¹û´æ´¢Êı¾İÁ¿´ïµ½maskÁ¿, ÆğÊ¼Ë÷Òı++
+		//å¦‚æœå­˜å‚¨æ•°æ®é‡è¾¾åˆ°maské‡, èµ·å§‹ç´¢å¼•++
 		if(m_p[i].mask <= m_p[i].cur)
 		{
 			m_p[i].start++;
 		}
 		
 		m_p[i].pinfo[m_p[i].cur % m_p[i].mask] = cur;
-		if (m_p[i].cur < m_p[i].mask-1)  //Êı¾İ²»×ã£¬ÎŞĞè¼ÆËã
+		if (m_p[i].cur < m_p[i].mask-1)  //æ•°æ®ä¸è¶³ï¼Œæ— éœ€è®¡ç®—
 		{
 			continue;
 		}
-		//×î´óÖµË÷ÒıÎŞĞ§Ê±£¬ÖØĞÂ²éÕÒ×î´óÖµ£¬µ±Ç°Öµ²»²ÎÓë¼ÆËã
+		//æœ€å¤§å€¼ç´¢å¼•æ— æ•ˆæ—¶ï¼Œé‡æ–°æŸ¥æ‰¾æœ€å¤§å€¼ï¼Œå½“å‰å€¼ä¸å‚ä¸è®¡ç®—
 		if ((m_p[i].maxIndex < m_p[i].start)|| m_p[i].maxIndex == -1)
 		{
 			for ( long j = m_p[i].start;j < m_p[i].cur;j++)
@@ -199,7 +199,7 @@ int basedataproc::formatdata(vector<string>subs, T_ORGIN_DATA *pOrgind)
 	pOrgind->closing = atof(subs[4].c_str());
 	return 0;
 }
-//Êä³öÊı¾İ
+//è¾“å‡ºæ•°æ®
 int basedataproc::outputline(T_ORGIN_DATA orgin_d)
 {
 	char line[400] = { 0 };
@@ -215,11 +215,11 @@ int basedataproc::outputline(T_ORGIN_DATA orgin_d)
 		return -1;
 	}
 	
-	//Ğ´ÎÄ¼ş
+	//å†™æ–‡ä»¶
 	snprintf(line, 399, "%s,%.2f,%.2f,%.2f%,%.2f,%.2f,%.2f,%.2f,%.2f\n", orgin_d.timestamp, orgin_d.opened, orgin_d.max, orgin_d.min, orgin_d.closing,to.p1,to.p2,to.minten,to.n);
 	m_outfp.saveline(line);
 }
-//Ã¿ĞĞ½øĞĞÊı¾İ×ª»»±ê¼Ç
+//æ¯è¡Œè¿›è¡Œæ•°æ®è½¬æ¢æ ‡è®°
 int basedataproc::decodeline(vector<string>subs)
 {
 	T_ORGIN_DATA orgin_d;
@@ -244,7 +244,7 @@ int basedataproc::decodefile()
 	while (fl = m_fp.readNextline())
 	{
 		vector<string>subs;
-		/*¶ººÅ·Ö¸ôÇĞ´Ê*/
+		/*é€—å·åˆ†éš”åˆ‡è¯*/
 		ret = strssplit(fl, strlen(fl), ',', subs);
 		if (ret <= 0)
 		{
@@ -304,7 +304,7 @@ int BaseDataProc(T_CONFIG config, char* infile,char*outfile)
 {
 	cbaseproc.init(config, infile,outfile);
 
-	//read file,ÖğĞĞ¶ÁÈ¡£¬ÇĞ·Ö£¬²¢Ğ´ÈëÎÄ¼ş
+	//read file,é€è¡Œè¯»å–ï¼Œåˆ‡åˆ†ï¼Œå¹¶å†™å…¥æ–‡ä»¶
 	return cbaseproc.decodefile();
 
 	return 0;

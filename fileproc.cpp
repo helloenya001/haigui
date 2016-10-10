@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "fileproc.h"
 
 
@@ -67,7 +67,7 @@ char* fileproc::readNextline()
 	{
 		return NULL;
 	}
-	while(!m_fin.eof())  //ÖğĞĞ¶ÁÈ¡£¬Ö±µ½½áÊø
+	while(!m_fin.eof())  //é€è¡Œè¯»å–ï¼Œç›´åˆ°ç»“æŸ
 	{
 		m_fin.getline(m_bufline, sizeof(m_bufline)-1);
 		if (strlen(m_bufline) < m_minsize)

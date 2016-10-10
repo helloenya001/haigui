@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "trader.h"
 #include"taccount.h"
 #include "stringproc.h"
@@ -49,7 +49,7 @@ int trader::addmoney(double money)
 }
 int trader::formatdata(char*fl, T_OUTPUT_DATA *pOuteData)
 {
-	/*¶ººÅ·Ö¸ôÇĞ´Ê*/
+	/*é€—å·åˆ†éš”åˆ‡è¯*/
 	int ret = 0;
 	vector<string>subs;
 	ret = strssplit(fl, strlen(fl), ',', subs);
@@ -75,7 +75,7 @@ int trader::formatdata(char*fl, T_OUTPUT_DATA *pOuteData)
 
 int trader::proc()
 {	
-	//¶ÁÈ¡¹ÉÊĞÎÄ¼ş
+	//è¯»å–è‚¡å¸‚æ–‡ä»¶
 	char *fl = NULL;
 	int ret = 0;
 	while (fl = m_fp.readNextline())
@@ -93,7 +93,7 @@ int trader::proc()
 		printf("%s\n", subs[i].c_str());
 		}*/
 	}
-	//Êı¾İÊäÈë£¬µ÷ÓÃ¾ö²ßÏµÍ³½øĞĞ¾ö²ß
+	//æ•°æ®è¾“å…¥ï¼Œè°ƒç”¨å†³ç­–ç³»ç»Ÿè¿›è¡Œå†³ç­–
 	return 0;
 }
 

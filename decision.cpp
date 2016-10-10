@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "decision.h"
 
 
@@ -41,12 +41,12 @@ int decision::judgeEnter(T_OUTPUT_DATA outData)
 		return 0;
 	}
 	
-	//¼ÆËãÍ·´çµ¥Î»
-	//°´ÕÕ1%´´½¨ÕÊ»§
+	//è®¡ç®—å¤´å¯¸å•ä½
+	//æŒ‰ç…§1%åˆ›å»ºå¸æˆ·
     int ret = m_create_func(0,m_config.limit*m_config.mu);
 	if (ret == 0)
 	{
-		//1.È¡µÃ×Ê½ğ¶î¶È¡£ 2.¼ÆËãÒ»¸öÍ·´ç¿É¹ºÂòµã¹ÉÆ±ÊıÁ¿
+		//1.å–å¾—èµ„é‡‘é¢åº¦ã€‚ 2.è®¡ç®—ä¸€ä¸ªå¤´å¯¸å¯è´­ä¹°ç‚¹è‚¡ç¥¨æ•°é‡
 		account *pAcc = taccount::searchAccount(m_gupid);
 		if (pAcc == NULL)
 		{
@@ -69,16 +69,16 @@ int decision::judgeDealing(account*pAcc, T_OUTPUT_DATA outData)
 
 int decision::judge(T_OUTPUT_DATA outData)
 {
-	/*  1. È·ÈÏ²¢Ë¢ĞÂµ±Ç°×´Ì¬¡£
-	    2. »ùÓÚ×´Ì¬Óëµ±Ç°¹ÉÊĞĞÅÏ¢ÅĞ¶ÏÏÂÒ»²½²Ù×÷
+	/*  1. ç¡®è®¤å¹¶åˆ·æ–°å½“å‰çŠ¶æ€ã€‚
+	    2. åŸºäºçŠ¶æ€ä¸å½“å‰è‚¡å¸‚ä¿¡æ¯åˆ¤æ–­ä¸‹ä¸€æ­¥æ“ä½œ
 	*/
 	account *pAcc = taccount::searchAccount(m_gupid);
-	//ÈëÊĞÅĞ¶Ï
+	//å…¥å¸‚åˆ¤æ–­
 	if (pAcc == NULL)
 	{
 		return judgeEnter(outData);
 	}
-	else //½»Ò×ÅĞ¶Ï
+	else //äº¤æ˜“åˆ¤æ–­
 	{
 		return judgeDealing(pAcc, outData);
 	}

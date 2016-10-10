@@ -1,6 +1,6 @@
-// stdafx.h : ±ê×¼ÏµÍ³°üº¬ÎÄ¼şµÄ°üº¬ÎÄ¼ş£¬
-// »òÊÇ¾­³£Ê¹ÓÃµ«²»³£¸ü¸ÄµÄ
-// ÌØ¶¨ÓÚÏîÄ¿µÄ°üº¬ÎÄ¼ş
+ï»¿// stdafx.h : æ ‡å‡†ç³»ç»ŸåŒ…å«æ–‡ä»¶çš„åŒ…å«æ–‡ä»¶ï¼Œ
+// æˆ–æ˜¯ç»å¸¸ä½¿ç”¨ä½†ä¸å¸¸æ›´æ”¹çš„
+// ç‰¹å®šäºé¡¹ç›®çš„åŒ…å«æ–‡ä»¶
 //
 
 #pragma once
@@ -17,18 +17,18 @@
 using namespace std;
 
 
-// TODO:  ÔÚ´Ë´¦ÒıÓÃ³ÌĞòĞèÒªµÄÆäËûÍ·ÎÄ¼ş
+// TODO:  åœ¨æ­¤å¤„å¼•ç”¨ç¨‹åºéœ€è¦çš„å…¶ä»–å¤´æ–‡ä»¶
 typedef struct _st_config
 {
-	int avgm; // ÒÆ¶¯Æ½¾ùÖµ,Ä¬ÈÏ20ÈÕ
-	int sl;   // Ö¹Ëğ·ù¶È(stop loss) SLÄ¬ÈÏ 2N
-	int rp;   // Í»ÆÆÊê»Øµã(ransom point) RPÄ¬ÈÏ 10ÈÕ×îµÍ
-	int pp1;  // Éê¹ºµã1£¨purchase point 1) PP1 Ä¬ÈÏ 20ÈÕ
-	int pp2;  // Éê¹ºµã2( purchase point 2£©PP2 Ä¬ÈÏ 50ÈÕ
-	double addi; // ×·¼ÓÍ¶×Ê¼ä¸ô(additional investment) ADDI Ä¬ÈÏ 1/2N
-	int mu;   // ×î´óÍ¶ÈëÍ·´çµ¥Î»( max unit) MU Ä¬ÈÏ 4
-	double limit; // Í¶Èë¶î¶È
-	char tmpdir[255]; //´æ·ÅÁÙÊ±ÎÄ¼şµÄÄ¬ÈÏÂ·¾¶
+	int avgm; // ç§»åŠ¨å¹³å‡å€¼,é»˜è®¤20æ—¥
+	int sl;   // æ­¢æŸå¹…åº¦(stop loss) SLé»˜è®¤ 2N
+	int rp;   // çªç ´èµå›ç‚¹(ransom point) RPé»˜è®¤ 10æ—¥æœ€ä½
+	int pp1;  // ç”³è´­ç‚¹1ï¼ˆpurchase point 1) PP1 é»˜è®¤ 20æ—¥
+	int pp2;  // ç”³è´­ç‚¹2( purchase point 2ï¼‰PP2 é»˜è®¤ 50æ—¥
+	double addi; // è¿½åŠ æŠ•èµ„é—´éš”(additional investment) ADDI é»˜è®¤ 1/2N
+	int mu;   // æœ€å¤§æŠ•å…¥å¤´å¯¸å•ä½( max unit) MU é»˜è®¤ 4
+	double limit; // æŠ•å…¥é¢åº¦
+	char tmpdir[255]; //å­˜æ”¾ä¸´æ—¶æ–‡ä»¶çš„é»˜è®¤è·¯å¾„
 }T_CONFIG;
 
 extern int BaseDataProc(T_CONFIG config, char* infile,char*outfile);

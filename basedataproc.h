@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "fileproc.h"
 #include <vector>
 
@@ -6,7 +6,7 @@
 #define P_NUM  2
 
 #define ORGIN_DATA_NUM 5
-//Ô­Ê¼Êı¾İ½á¹¹
+//åŸå§‹æ•°æ®ç»“æ„
 // 2016-01-31,
 typedef struct t_orgin_data
 {
@@ -38,14 +38,14 @@ class basedataproc
 {
 	typedef struct st_pinfo
 	{
-		 long start; //ÆğÊ¼Ë÷Òı
-		 long cur;   //µ±Ç°Ë÷Òı
-		 long maxIndex; //×î¸ßÖµË÷Òı
-		 long mask;  //ÑÚÂë
-		 long usenum;  //Ê¹ÓÃ¶àÉÙ×öÑ­»·
-		 long readnum;  //ÒÑ¾­¶ÁÈë¶àÉÙÊı¾İ
-		double pinfo[MAX_PITEM_NUM];// Ñ­»·±£´æĞÅÏ¢
-		double maxv;  //×î´óÖµ
+		 long start; //èµ·å§‹ç´¢å¼•
+		 long cur;   //å½“å‰ç´¢å¼•
+		 long maxIndex; //æœ€é«˜å€¼ç´¢å¼•
+		 long mask;  //æ©ç 
+		 long usenum;  //ä½¿ç”¨å¤šå°‘åšå¾ªç¯
+		 long readnum;  //å·²ç»è¯»å…¥å¤šå°‘æ•°æ®
+		double pinfo[MAX_PITEM_NUM];// å¾ªç¯ä¿å­˜ä¿¡æ¯
+		double maxv;  //æœ€å¤§å€¼
 
 	}T_PINFO;
 	int m_init;
@@ -63,8 +63,8 @@ public:
 	~basedataproc();
 	int decodeline(vector<string>subs);
 	int formatdata(vector<string>subs, T_ORGIN_DATA *pOrgin_d);
-	int init(T_CONFIG config, char* infile,char*outfile); //³õÊ¼»¯
-	int decodefile();// ½âÎö´¦ÀíÎÄ¼ş
+	int init(T_CONFIG config, char* infile,char*outfile); //åˆå§‹åŒ–
+	int decodefile();// è§£æå¤„ç†æ–‡ä»¶
 	double getp1();
 	double getp2();
 	double getMinten();

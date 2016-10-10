@@ -1,13 +1,13 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "account.h"
 
 
 account::account()
 {
-	m_initmoney = 0.0;//³õÊ¼½ğ¶î
-	m_gupid[0]=0;//¹ÉÆ±id
-	m_curgupnum = 0.0;    //Ê£Óà¹ÉÆ±·İ¶î
-	m_curmoney= 0.0;//µ±Ç°½ğ¶î
+	m_initmoney = 0.0;//åˆå§‹é‡‘é¢
+	m_gupid[0]=0;//è‚¡ç¥¨id
+	m_curgupnum = 0.0;    //å‰©ä½™è‚¡ç¥¨ä»½é¢
+	m_curmoney= 0.0;//å½“å‰é‡‘é¢
 }
 
 

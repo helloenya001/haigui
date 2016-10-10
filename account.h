@@ -1,41 +1,41 @@
-#pragma once
+ï»¿#pragma once
 #include <vector>
 
 #define  ACCOUNT_BUY  0
 #define  ACCOUNT_SELL 1
 typedef struct t_transaction
 {
-	char date[32];// ²Ù×÷Ê±¼ä
-	int type;  //ÀàĞÍÂò»¹ÊÇÂô£¬Âò½ğ¶î¼õÉÙ£¬Âô½ğ¶îÔö¼Ó
-    double cache;//»¨·Ñ½ğ¶î
-	int gupnum; //¹ºÂòµÄ¹ÉÆ±·İ¶î
-	double guvalue;//¹ÉÆ±¼Û¸ñ
+	char date[32];// æ“ä½œæ—¶é—´
+	int type;  //ç±»å‹ä¹°è¿˜æ˜¯å–ï¼Œä¹°é‡‘é¢å‡å°‘ï¼Œå–é‡‘é¢å¢åŠ 
+    double cache;//èŠ±è´¹é‡‘é¢
+	int gupnum; //è´­ä¹°çš„è‚¡ç¥¨ä»½é¢
+	double guvalue;//è‚¡ç¥¨ä»·æ ¼
 }T_TRANS;
 
 typedef struct t_tval
 {
-	char date[32]  ;// ²Ù×÷Ê±¼ä
-	double cache;   //½ğ¶î
-	int gupnum;    //¹ÉÆ±·İ¶î
-	double guvalue;//¹ÉÆ±¼Û¸ñ
+	char date[32]  ;// æ“ä½œæ—¶é—´
+	double cache;   //é‡‘é¢
+	int gupnum;    //è‚¡ç¥¨ä»½é¢
+	double guvalue;//è‚¡ç¥¨ä»·æ ¼
 }T_TVAL;
 
 class account
 {
 public:
-	double m_initmoney;//³õÊ¼½ğ¶î
-	char m_gupid[32];//¹ÉÆ±id
-	int  m_curgupnum;    //Ê£Óà¹ÉÆ±·İ¶î
-	double m_curmoney;//µ±Ç°½ğ¶î
+	double m_initmoney;//åˆå§‹é‡‘é¢
+	char m_gupid[32];//è‚¡ç¥¨id
+	int  m_curgupnum;    //å‰©ä½™è‚¡ç¥¨ä»½é¢
+	double m_curmoney;//å½“å‰é‡‘é¢
 	vector<T_TRANS> translist;
-	vector<T_TVAL>m_tval;//Ã¿ÌìµÄ¹ÉÆ±¼ÛÖµ
+	vector<T_TVAL>m_tval;//æ¯å¤©çš„è‚¡ç¥¨ä»·å€¼
 protected:
-	int operater(int type, char *pdate, double cache, int gupnum, double guvalue);//²ÙÅÌ
+	int operater(int type, char *pdate, double cache, int gupnum, double guvalue);//æ“ç›˜
 public:
 	account();
 	~account();
 	int init(double money,char* gupid);
-	int buygup(char *pdate, double cache, int gupnum, double guvalue);//¹ºÂò
-	int sellgup(char *pdate, double cache, int gupnum, double guvalue);//Âô³ö
+	int buygup(char *pdate, double cache, int gupnum, double guvalue);//è´­ä¹°
+	int sellgup(char *pdate, double cache, int gupnum, double guvalue);//å–å‡º
 };
 

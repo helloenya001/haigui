@@ -1,11 +1,11 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "taccount.h"
 
 
 taccount::taccount()
 {
 	totalmoney = 0;
-	freemoney = 0;//¿ÉÓÃ½ğ¶î
+	freemoney = 0;//å¯ç”¨é‡‘é¢
 	usedmoney = 0;
 }
 

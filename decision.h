@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 #include "taccount.h"
 #include "basedataproc.h"
-/*¾ö²ßÕßºÍ²ÙÅÌÊÖ
-¾ö²ßÕßdecision£º»ùÓÚÏÖÓĞ¹ÉÊĞĞĞÇéºÍÕÊ»§Í¶×ÊĞÅÏ¢£¬ÅĞ¶ÏÏÂÒ»²½µÄ²Ù×÷
-²ÙÅÌÊÖ£º¸ù¾İ¾ö²ßÕßµÄÖ¸Ê¾½øĞĞÕÊ»§Í¶×Ê²Ù×÷¡£
+/*å†³ç­–è€…å’Œæ“ç›˜æ‰‹
+å†³ç­–è€…decisionï¼šåŸºäºç°æœ‰è‚¡å¸‚è¡Œæƒ…å’Œå¸æˆ·æŠ•èµ„ä¿¡æ¯ï¼Œåˆ¤æ–­ä¸‹ä¸€æ­¥çš„æ“ä½œ
+æ“ç›˜æ‰‹ï¼šæ ¹æ®å†³ç­–è€…çš„æŒ‡ç¤ºè¿›è¡Œå¸æˆ·æŠ•èµ„æ“ä½œã€‚
 */
 #define STATE_NOACCOUNT 0
 #define STATE_DEALING   1
@@ -12,16 +12,16 @@
 
 
 
-//²Ù×÷»Øµ÷£¬
-//opernum: ÄÚ²¿½»Ò×Á÷Ë®ºÅ
-//oper: ÂòÂô
-//gupid:¹ÉÆ±ID
-//gupnum:¹ÉÆ±ÊıÁ¿
-//guvalue:µ±Ç°¹ÉÆ±¼Û¸ñ
+//æ“ä½œå›è°ƒï¼Œ
+//opernum: å†…éƒ¨äº¤æ˜“æµæ°´å·
+//oper: ä¹°å–
+//gupid:è‚¡ç¥¨ID
+//gupnum:è‚¡ç¥¨æ•°é‡
+//guvalue:å½“å‰è‚¡ç¥¨ä»·æ ¼
 typedef int(*deal_notice_func_t)(int opernum,int oper, char* gupid,int gupnum, double guvalue); 
-//´´½¨ÕÊ»§
+//åˆ›å»ºå¸æˆ·
 typedef int(*create_account_func_t)(int opernum,double percent);
-//¹Ø±ÕÕÊ»§
+//å…³é—­å¸æˆ·
 typedef int(*close_account_func_t)(int opernum);
 
 class decision
@@ -29,10 +29,10 @@ class decision
 public:
 	decision();
 	~decision();
-	char m_gupid[32];   //¹ÉÆ±id
-	int  m_maxdealing;  //×î´ó½»Ò×´ÎÊı
-	int  m_dealingtimes;//½»Ò×ÖĞÍ¶×Ê´ÎÊı
-	int  m_accountstate;//½»Ò××´Ì¬
+	char m_gupid[32];   //è‚¡ç¥¨id
+	int  m_maxdealing;  //æœ€å¤§äº¤æ˜“æ¬¡æ•°
+	int  m_dealingtimes;//äº¤æ˜“ä¸­æŠ•èµ„æ¬¡æ•°
+	int  m_accountstate;//äº¤æ˜“çŠ¶æ€
 	deal_notice_func_t m_deal_func;
 	create_account_func_t m_create_func;
 	close_account_func_t m_close_func;
@@ -40,11 +40,11 @@ public:
 	T_CONFIG m_config;
 protected:
 
-	int judgeEnter(T_OUTPUT_DATA outData);// ÈëÊĞÅĞ¶Ï
-	int judgeDealing(account*pAcc, T_OUTPUT_DATA outData);//½»Ò×ÅĞ¶Ï
+	int judgeEnter(T_OUTPUT_DATA outData);// å…¥å¸‚åˆ¤æ–­
+	int judgeDealing(account*pAcc, T_OUTPUT_DATA outData);//äº¤æ˜“åˆ¤æ–­
 public:
-	int init(T_CONFIG config,char* gupid,int maxdealnum, deal_notice_func_t dealfunc, create_account_func_t creatfunc, close_account_func_t closefunc);// ³õÊ¼»¯Ò»¸ö¾ö²ßÕß
-	int judge(T_OUTPUT_DATA outData);// ²ßÂÔ¾ö²ß 
+	int init(T_CONFIG config,char* gupid,int maxdealnum, deal_notice_func_t dealfunc, create_account_func_t creatfunc, close_account_func_t closefunc);// åˆå§‹åŒ–ä¸€ä¸ªå†³ç­–è€…
+	int judge(T_OUTPUT_DATA outData);// ç­–ç•¥å†³ç­– 
 	int getstate();
 	int setstate(int state);
 

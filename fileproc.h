@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include<fstream>
 #include <string>
@@ -18,7 +18,7 @@ class fileproc
 	char* m_pfNext;
 	char m_filepath[256];
 	int  m_linenum;
-	int m_procend;  //ÊÇ·ñÒÑ´¦Àíµ½½áÎ²£¬Èç¹ûÎª1 ´ú±íÒÑ½áÊø
+	int m_procend;  //æ˜¯å¦å·²å¤„ç†åˆ°ç»“å°¾ï¼Œå¦‚æœä¸º1 ä»£è¡¨å·²ç»“æŸ
 	char m_bufline[2000];
 	int m_count; 
 	int m_minsize;
