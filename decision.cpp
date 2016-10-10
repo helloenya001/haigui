@@ -42,7 +42,7 @@ int decision::judgeEnter(T_OUTPUT_DATA outData)
 	}
 	
 	//计算头寸单位
-	//按照1%创建帐户
+	//按照1%创建帐户  
     int ret = m_create_func(0,m_config.limit*m_config.mu);
 	if (ret == 0)
 	{
