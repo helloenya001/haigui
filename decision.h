@@ -10,7 +10,8 @@
 #define STATE_BREAKING  2
 #define STATE_STOPLOSS  3
 
-
+#define CLOSE_TUPO   0 //突破退出
+#define CLOSE_ZHISUN 1 //止损退出
 
 //操作回调，
 //opernum: 内部交易流水号
@@ -22,7 +23,7 @@ typedef int(*deal_notice_func_t)(int opernum,int oper, char* gupid,int gupnum, d
 //创建帐户
 typedef int(*create_account_func_t)(int opernum,double percent);
 //关闭帐户
-typedef int(*close_account_func_t)(int opernum);
+typedef int(*close_account_func_t)(int opernum,int closestate);
 
 class decision
 {
@@ -30,9 +31,10 @@ public:
 	decision();
 	~decision();
 	char m_gupid[32];   //股票id
-	int  m_maxdealing;  //最大交易次数
 	int  m_dealingtimes;//交易中投资次数
 	int  m_accountstate;//交易状态
+        double m_oneToucun; //一个头寸
+        double m_nextdealingLevel;// 下一次投资的时机
 	deal_notice_func_t m_deal_func;
 	create_account_func_t m_create_func;
 	close_account_func_t m_close_func;

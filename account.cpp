@@ -62,3 +62,7 @@ int account::operater(int type, char *pdate, double cache, int gupnum, double gu
 	m_curgupnum += gupnum;
 	translist.push_back(tval);
 }
+int account::getdealnum()
+{
+    return translist.size();
+}

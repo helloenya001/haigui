@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <vector>
 
 #define  ACCOUNT_BUY  0
@@ -37,5 +37,6 @@ public:
 	int init(double money,char* gupid);
 	int buygup(char *pdate, double cache, int gupnum, double guvalue);//购买
 	int sellgup(char *pdate, double cache, int gupnum, double guvalue);//卖出
+        int getdealnum();//获取投资次数
 };
 

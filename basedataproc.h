@@ -21,10 +21,10 @@ typedef struct t_orgin_data
 typedef struct t_output_data
 {
 	T_ORGIN_DATA t_org;
-	double p1;
-	double p2;
-	double minten;
-	double n;
+	double p1; //20日最高值
+	double p2; //50日最高
+	double minten;//10日最低
+	double n; //振幅
 }T_OUTPUT_DATA;
 
 typedef struct t_N

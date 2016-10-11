@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 #include "decision.h"
 
 
@@ -42,7 +42,7 @@ int decision::judgeEnter(T_OUTPUT_DATA outData)
 	}
 	
 	//计算头寸单位
-	//按照1%创建帐户  
+	//按照1%金额*头寸额度创建帐户  
     int ret = m_create_func(0,m_config.limit*m_config.mu);
 	if (ret == 0)
 	{
@@ -52,9 +52,13 @@ int decision::judgeEnter(T_OUTPUT_DATA outData)
 		{
 			return -1;
 		}
+                m_oneToucun = pAcc->m_initmoney/m_config.mu; //一个头寸对应投资金额
+                guvalue = outData.t_org.closing;
+                gunum = (int)(m_oneToucun/guvalue);
+                m_nextdealingLevel = guvalue+ outData.n/2; //下次投入门限值
 		m_accountstate = STATE_DEALING;
 		m_opernum++;
-		pAcc->
+		
 		m_deal_func(m_opernum, ACCOUNT_BUY, m_gupid, gunum, guvalue);
 	}
 	
@@ -63,7 +67,36 @@ int decision::judgeEnter(T_OUTPUT_DATA outData)
 
 int decision::judgeDealing(account*pAcc, T_OUTPUT_DATA outData)
 {
-	return 0;
+    int gunum;
+    double guvalue;
+    //判断是否要退出
+    if( outData.t_org.closing<outData.minten)//突破
+    {
+        m_close_func(m_opernum,CLOSE_TUPO);
+        return 0;
+    }
+    else if( (outData.t_org.max - outData.t_org.min)/outData.n >m_config.sl ) //止损
+    {
+        m_close_func(m_opernum,CLOSE_ZHISUN);
+        return 0;
+    }
+    
+    //达到最大交易次数,终止
+    if(pAcc->getdealnum()>=m_config.mu)
+    {
+        return 0;
+    }
+    //是否要交易,涨幅超过下次投入门限值
+    if( outData.t_org.closing > this->m_nextdealingLevel)
+    {
+        m_oneToucun = pAcc->m_initmoney/m_config.mu; //一个头寸对应投资金额
+        guvalue = outData.t_org.closing;
+        gunum = (int)(m_oneToucun/guvalue);
+        m_nextdealingLevel = guvalue+ outData.n/2; //下次投入门限值
+        m_opernum++;
+        m_deal_func(m_opernum, ACCOUNT_BUY, m_gupid, gunum, guvalue);
+    }
+    return 0;
 }
 
 
