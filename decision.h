@@ -19,11 +19,12 @@
 //gupid:股票ID
 //gupnum:股票数量
 //guvalue:当前股票价格
-typedef int(*deal_notice_func_t)(int opernum,int oper, char* gupid,int gupnum, double guvalue); 
+//pdata 触发时间
+typedef int(*deal_notice_func_t)(int opernum,char*pdate,int oper, char* gupid,int gupnum, double guvalue); 
 //创建帐户
-typedef int(*create_account_func_t)(int opernum,double percent);
+typedef int(*create_account_func_t)(int opernum, char*pdate, char* gupid, double percent);
 //关闭帐户
-typedef int(*close_account_func_t)(int opernum,int closestate);
+typedef int(*close_account_func_t)(int opernum, char*pdate, char* gupid, int closestate,double guvalue);
 
 class decision
 {
@@ -44,6 +45,7 @@ protected:
 
 	int judgeEnter(T_OUTPUT_DATA outData);// 入市判断
 	int judgeDealing(account*pAcc, T_OUTPUT_DATA outData);//交易判断
+
 public:
 	int init(T_CONFIG config,char* gupid,int maxdealnum, deal_notice_func_t dealfunc, create_account_func_t creatfunc, close_account_func_t closefunc);// 初始化一个决策者
 	int judge(T_OUTPUT_DATA outData);// 策略决策 

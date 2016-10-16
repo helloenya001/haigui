@@ -22,20 +22,36 @@ int account::init(double money, char* gupid)
 	m_curmoney = money;
 }
 
-int account::buygup(char *pdate,double cache, int gupnum, double guvalue)
+int account::buygup(char *pdate, int gupnum, double guvalue)
 {
 	int type = ACCOUNT_BUY;
-	return operater(type,pdate,cache,gupnum,guvalue);
+	return operater(type,pdate,gupnum,guvalue);
 
 }
-int account::sellgup(char *pdate, double cache, int gupnum, double guvalue)
+int account::sellgup(char *pdate,  int gupnum, double guvalue)
 {
 	int type = ACCOUNT_SELL;
-	return operater(type, pdate, cache, gupnum, guvalue);
+	return operater(type, pdate,  gupnum, guvalue);
 }
-int account::operater(int type, char *pdate, double cache, int gupnum, double guvalue)
+//卖出全部股票
+int account::sellall(char * pdate, double guvalue)
 {
 	T_TRANS tval;
+	double cache = m_curgupnum *guvalue;
+	tval.type = ACCOUNT_SELL;
+	tval.cache = cache;
+	tval.gupnum = m_curgupnum;
+	tval.guvalue = guvalue;
+
+	m_curmoney += cache;
+	m_curgupnum = 0;
+	translist.push_back(tval);
+	return 0;
+}
+int account::operater(int type, char *pdate, int gupnum, double guvalue)
+{
+	T_TRANS tval;
+	double cache = gupnum*guvalue;
 	tval.type = type;
 	tval.cache = cache;
 	tval.gupnum = gupnum;

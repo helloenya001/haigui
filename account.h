@@ -30,13 +30,14 @@ public:
 	vector<T_TRANS> translist;
 	vector<T_TVAL>m_tval;//每天的股票价值
 protected:
-	int operater(int type, char *pdate, double cache, int gupnum, double guvalue);//操盘
+	int operater(int type, char *pdate,int gupnum, double guvalue);//操盘
 public:
 	account();
 	~account();
 	int init(double money,char* gupid);
-	int buygup(char *pdate, double cache, int gupnum, double guvalue);//购买
-	int sellgup(char *pdate, double cache, int gupnum, double guvalue);//卖出
+	int buygup(char *pdate,int gupnum, double guvalue);//购买
+	int sellgup(char *pdate, int gupnum, double guvalue);//卖出
+	int sellall(char *pdate, double guvalue);
         int getdealnum();//获取投资次数
 };
 

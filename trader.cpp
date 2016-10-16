@@ -97,17 +97,77 @@ int trader::proc()
 	return 0;
 }
 
-int trader::deal_notice(int opernum, int oper, char * gupid, int gupnum, double guvalue)
+//处理,将帐户中的钱转换为股票
+//严重问题。由于上涨导致金额不足。
+int trader::deal_notice(int opernum, char*pdate, int oper, char * gupid, int gupnum, double guvalue)
 {
+	account *pAcc = taccount::searchAccount(m_gupid);
+	if (pAcc == NULL)
+	{
+		return -1;
+	}
+	if (oper == ACCOUNT_BUY)
+	{
+		pAcc->buygup(pdate, gupnum, guvalue);
+	}
+	else
+	{
+		pAcc->sellgup(pdate, gupnum, guvalue);
+	}
+	traderlog(pdate, STATE_DEALING, gupid);
+	m_decision.m_dealingtimes++;
 	return 0;
 }
 
-int trader::create_account(int opernum, double money)
+//按照比例创建帐户
+int trader::create_account(int opernum, char*pdate, char* gupid, double percent)
 {
+	int ret = m_taccount->createAccount(gupid, percent);
+	if (ret != 0)
+	{
+		return -1;
+	}
 	return 0;
 }
 
-int trader::close_account(int opernum)
+int trader::close_account(int opernum, char*pdate, char* gupid, int closestate, double guvalue)
 {
+	//卖出全部股票，修改
+	account *pAcc = taccount::searchAccount(m_gupid);
+	if (pAcc == NULL)
+	{
+		return -1;
+	}
+	pAcc->sellall(pdate,guvalue);
+	m_decision.setstate(closestate);
+	traderlog(pdate, closestate, gupid);
+	//销毁交易帐户，返回资金
+	m_taccount->deleteAccount(gupid);
+	return 0;
+}
+
+//日志:时间戳，操作，总可用金额，帐户名称，帐户金额，帐户现金,股票金额，股票数
+int trader::traderlog(char * pdate, int oper, char * gupid)
+{
+	char line[1000] = { 0 };
+	char*opers = "未知";
+	account *pAcc = taccount::searchAccount(gupid);
+	if (pAcc == NULL)
+	{
+		return -1;
+	}
+	switch (oper)
+	{
+	case STATE_DEALING:
+		opers = "交易";
+		break;
+	case STATE_BREAKING:
+		opers = "突破退出";
+		breka;
+	case STATE_STOPLOSS:
+		opers = "止损退出";
+		break;
+	}
+	snprintf(line, 1000, "%s,%s,%f,%s,%f,%f,%f,%d", pdate, );
 	return 0;
 }

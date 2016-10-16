@@ -94,3 +94,4 @@ int fileproc::saveline(char* line)
 	m_fout << line;
 	return 0;
 }
+
