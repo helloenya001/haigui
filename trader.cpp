@@ -3,11 +3,13 @@
 #include"taccount.h"
 #include "stringproc.h"
 #include "basedataproc.h"
+#include "decision.h"
 
 trader::trader()
 {
 	m_init = 0;
 	m_taccount = taccount::getTaccount(0);
+	m_decision = new decision();
 }
 
 trader::~trader()
@@ -36,8 +38,8 @@ int trader::init(T_CONFIG config, char* infile, char* logfile,char*gupid)
 		{
 			m_init = 1;
 		}
-		strcpy(m_gupid, gupid);
-		m_decision.init(config,gupid, config.mu,this->deal_notice,this->create_account,this->close_account);
+		strcpy_s(m_gupid, gupid);
+		m_decision->init(config,gupid, config.mu,this);
 	}
 	return 0;
 }
@@ -87,7 +89,7 @@ int trader::proc()
 		{
 			continue;
 		}
-		m_decision.judge(outData);
+		m_decision->judge(outData);
 		/*for (int i = 0;i < subs.size();i++)
 		{
 		printf("%s\n", subs[i].c_str());
@@ -114,8 +116,8 @@ int trader::deal_notice(int opernum, char*pdate, int oper, char * gupid, int gup
 	{
 		pAcc->sellgup(pdate, gupnum, guvalue);
 	}
-	traderlog(pdate, STATE_DEALING, gupid);
-	m_decision.m_dealingtimes++;
+	traderlog(pdate, STATE_DEALING, gupid,guvalue);
+	m_decision->m_dealingtimes++;
 	return 0;
 }
 
@@ -139,15 +141,15 @@ int trader::close_account(int opernum, char*pdate, char* gupid, int closestate, 
 		return -1;
 	}
 	pAcc->sellall(pdate,guvalue);
-	m_decision.setstate(closestate);
-	traderlog(pdate, closestate, gupid);
+	m_decision->setstate(closestate);
+	traderlog(pdate, closestate, gupid,guvalue);
 	//销毁交易帐户，返回资金
 	m_taccount->deleteAccount(gupid);
 	return 0;
 }
 
-//日志:时间戳，操作，总可用金额，帐户名称，帐户金额，帐户现金,股票金额，股票数
-int trader::traderlog(char * pdate, int oper, char * gupid)
+//日志:时间戳，操作，初始金额，总可用金额，帐户名称，帐户初始金额，帐户金额，帐户现金,股票金额，股票数
+int trader::traderlog(char * pdate, int oper, char * gupid,double guvalue)
 {
 	char line[1000] = { 0 };
 	char*opers = "未知";
@@ -163,11 +165,11 @@ int trader::traderlog(char * pdate, int oper, char * gupid)
 		break;
 	case STATE_BREAKING:
 		opers = "突破退出";
-		breka;
+		break;
 	case STATE_STOPLOSS:
 		opers = "止损退出";
 		break;
 	}
-	snprintf(line, 1000, "%s,%s,%f,%s,%f,%f,%f,%d", pdate, );
+	snprintf(line, 1000, "%s,%s,%f,%f,%s,%f,%f,%f,%f,%d", pdate, opers,m_taccount->getAccountTotalValue(),m_taccount->freemoney,gupid,pAcc->m_initmoney,pAcc->getAccountvalue(),pAcc->m_curmoney,pAcc->m_curgupnum*guvalue, pAcc->m_curgupnum);
 	return 0;
 }

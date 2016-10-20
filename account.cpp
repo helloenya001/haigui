@@ -6,8 +6,9 @@ account::account()
 {
 	m_initmoney = 0.0;//初始金额
 	m_gupid[0]=0;//股票id
-	m_curgupnum = 0.0;    //剩余股票份额
+	m_curgupnum = 0;    //剩余股票份额
 	m_curmoney= 0.0;//当前金额
+	m_curguvalue = 0.0;
 }
 
 
@@ -18,8 +19,9 @@ account::~account()
 int account::init(double money, char* gupid)
 {
 	m_initmoney = money;
-	strcpy(m_gupid,gupid);
+	strcpy_s(m_gupid,gupid);
 	m_curmoney = money;
+	return 0;
 }
 
 int account::buygup(char *pdate, int gupnum, double guvalue)
@@ -48,6 +50,11 @@ int account::sellall(char * pdate, double guvalue)
 	translist.push_back(tval);
 	return 0;
 }
+int account::setcurgavlue(double guvalue)
+{
+	m_curguvalue = guvalue;
+	return 0;
+}
 int account::operater(int type, char *pdate, int gupnum, double guvalue)
 {
 	T_TRANS tval;
@@ -56,7 +63,7 @@ int account::operater(int type, char *pdate, int gupnum, double guvalue)
 	tval.cache = cache;
 	tval.gupnum = gupnum;
 	tval.guvalue = guvalue;
-	strcpy(tval.date, pdate);
+	strcpy_s(tval.date, pdate);
 
 	if (type == ACCOUNT_BUY)
 	{
@@ -77,8 +84,14 @@ int account::operater(int type, char *pdate, int gupnum, double guvalue)
 	m_curmoney += cache;
 	m_curgupnum += gupnum;
 	translist.push_back(tval);
+	return 0;
 }
 int account::getdealnum()
 {
     return translist.size();
+}
+
+double account::getAccountvalue()
+{
+	return m_curmoney+ m_curgupnum*m_curguvalue;
 }

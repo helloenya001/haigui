@@ -19,10 +19,6 @@ int taccount::init(double tmoney)
 	freemoney = tmoney;
 	return 0;
 }
-account * taccount::searchAccountL(char * gupID)
-{
-	return nullptr;
-}
 int taccount::addmoney(double money)
 {
 	totalmoney += money;
@@ -111,4 +107,17 @@ int taccount::deleteAccount(char * gupID)
 	subaccount.erase(gupID);
 	delete(pAcc);
 	return 0;
+}
+
+//将每个子账户中的投资进行计算与总帐户的freemoney相加
+double taccount::getAccountTotalValue()
+{
+	double ret = freemoney;
+	map<string, account*>::iterator it;
+	for (it = subaccount.begin();it != subaccount.end();++it)
+	{
+		account *pAcc = it->second;
+		ret += pAcc->getAccountvalue();
+	}
+	return ret;
 }

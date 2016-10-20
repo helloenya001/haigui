@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "decision.h"
-
+#include "trader.h"
+#include "taccount.h"
 
 decision::decision()
 {
@@ -13,12 +14,10 @@ decision::~decision()
 {
 }
 
-int decision::init(T_CONFIG config, char* gupid, int maxdealnum, deal_notice_func_t dealfunc, create_account_func_t creatfunc, close_account_func_t closefunc)
+int decision::init(T_CONFIG config, char* gupid, int maxdealnum, trader *ptrader)
 {
-	strcpy(m_gupid, gupid);
-	m_deal_func = dealfunc;
-	m_create_func = creatfunc;
-	m_close_func = closefunc;
+	strcpy_s(m_gupid, gupid);
+	m_ptrade = ptrader;
 	m_config = config;
 	return 0;
 }
@@ -42,7 +41,7 @@ int decision::judgeEnter(T_OUTPUT_DATA outData)
 	
 	//计算头寸单位
 	//按照1%金额*头寸额度创建帐户  
-    int ret = m_create_func(0,m_gupid,outData.t_org.timestamp,m_config.limit*m_config.mu);
+    int ret = m_ptrade->create_account(0, outData.t_org.timestamp,m_gupid,m_config.limit*m_config.mu);
 	if (ret == 0)
 	{
 		//1.取得资金额度。 2.计算一个头寸可购买点股票数量
@@ -51,6 +50,7 @@ int decision::judgeEnter(T_OUTPUT_DATA outData)
 		{
 			return -1;
 		}
+		pAcc->setcurgavlue(outData.t_org.closing);
                 m_oneToucun = pAcc->m_initmoney/m_config.mu; //一个头寸对应投资金额
                 guvalue = outData.t_org.closing;
                 gunum = (int)(m_oneToucun/guvalue);
@@ -58,7 +58,7 @@ int decision::judgeEnter(T_OUTPUT_DATA outData)
 		m_accountstate = STATE_DEALING;
 		m_opernum++;
 		
-		m_deal_func(m_opernum, outData.t_org.timestamp, ACCOUNT_BUY, m_gupid, gunum, guvalue);
+		m_ptrade->deal_notice(m_opernum, outData.t_org.timestamp, ACCOUNT_BUY, m_gupid, gunum, guvalue);
 	}
 	
 	return 0;
@@ -71,12 +71,12 @@ int decision::judgeDealing(account*pAcc, T_OUTPUT_DATA outData)
     //判断是否要退出
     if( outData.t_org.closing<outData.minten)//突破
     {
-        m_close_func(m_opernum,CLOSE_TUPO);
+		m_ptrade->close_account(m_opernum,outData.t_org.timestamp,pAcc->m_gupid,CLOSE_TUPO,outData.t_org.closing);
         return 0;
     }
     else if( (outData.t_org.max - outData.t_org.min)/outData.n >m_config.sl ) //止损
     {
-        m_close_func(m_opernum, outData.t_org.timestamp, m_gupid,CLOSE_ZHISUN,outData.t_org.closing);
+		m_ptrade->close_account(m_opernum, outData.t_org.timestamp, m_gupid,CLOSE_ZHISUN,outData.t_org.closing);
         return 0;
     }
     
@@ -93,7 +93,7 @@ int decision::judgeDealing(account*pAcc, T_OUTPUT_DATA outData)
         gunum = (int)(m_oneToucun/guvalue);
         m_nextdealingLevel = guvalue+ outData.n/2; //下次投入门限值
         m_opernum++;
-        m_deal_func(m_opernum, outData.t_org.timestamp, ACCOUNT_BUY, m_gupid, gunum, guvalue);
+		m_ptrade->deal_notice(m_opernum, outData.t_org.timestamp, ACCOUNT_BUY, m_gupid, gunum, guvalue);
     }
     return 0;
 }
@@ -114,6 +114,7 @@ int decision::judge(T_OUTPUT_DATA outData)
 	}
 	else //交易判断
 	{
+		pAcc->setcurgavlue(outData.t_org.closing);
 		return judgeDealing(pAcc, outData);
 	}
 }
@@ -126,5 +127,5 @@ int decision::getstate()
 int decision::setstate(int state)
 {
 	m_accountstate = state;
-
+	return 0;
 }
