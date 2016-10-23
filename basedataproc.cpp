@@ -216,7 +216,7 @@ int basedataproc::outputline(T_ORGIN_DATA orgin_d)
 	}
 	
 	//写文件
-	snprintf(line, 399, "%s,%.2f,%.2f,%.2f%,%.2f,%.2f,%.2f,%.2f,%.2f\n", orgin_d.timestamp, orgin_d.opened, orgin_d.max, orgin_d.min, orgin_d.closing,to.p1,to.p2,to.minten,to.n);
+	snprintf(line, 399, "%s,%.2f,%.2f,%.2f%,%.2f,%.2f,%.2f,%.2f,%.2f", orgin_d.timestamp, orgin_d.opened, orgin_d.max, orgin_d.min, orgin_d.closing,to.p1,to.p2,to.minten,to.n);
 	m_outfp.saveline(line);
 }
 //每行进行数据转换标记

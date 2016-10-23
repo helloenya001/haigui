@@ -24,7 +24,7 @@ protected:
 	int formatdata(char*fl, T_OUTPUT_DATA *pOuteData);
 public:
 	//
-	int init(T_CONFIG config, char* infile, char* logfile,char*gupid);
+	int init(T_CONFIG config, char* infile, char* logfile, char*desionlog, char*gupid);
 	int addmoney(double money);
 	int proc();
 

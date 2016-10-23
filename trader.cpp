@@ -15,7 +15,7 @@ trader::trader()
 trader::~trader()
 {
 }
-int trader::init(T_CONFIG config, char* infile, char* logfile,char*gupid)
+int trader::init(T_CONFIG config, char* infile, char* logfile,char*desionlog,char*gupid)
 {
 	if (m_init == 0)
 	{
@@ -39,7 +39,7 @@ int trader::init(T_CONFIG config, char* infile, char* logfile,char*gupid)
 			m_init = 1;
 		}
 		strcpy_s(m_gupid, gupid);
-		m_decision->init(config,gupid, config.mu,this);
+		m_decision->init(config,gupid, config.mu,this, desionlog);
 	}
 	return 0;
 }
@@ -116,7 +116,7 @@ int trader::deal_notice(int opernum, char*pdate, int oper, char * gupid, int gup
 	{
 		pAcc->sellgup(pdate, gupnum, guvalue);
 	}
-	traderlog(pdate, STATE_DEALING, gupid,guvalue);
+	traderlog(pdate,oper, gupid,guvalue);
 	m_decision->m_dealingtimes++;
 	return 0;
 }
@@ -124,7 +124,7 @@ int trader::deal_notice(int opernum, char*pdate, int oper, char * gupid, int gup
 //按照比例创建帐户
 int trader::create_account(int opernum, char*pdate, char* gupid, double percent)
 {
-	int ret = m_taccount->createAccount(gupid, percent);
+	int ret = m_taccount->createAccountBypercent(gupid, percent);
 	if (ret != 0)
 	{
 		return -1;
@@ -142,17 +142,24 @@ int trader::close_account(int opernum, char*pdate, char* gupid, int closestate, 
 	}
 	pAcc->sellall(pdate,guvalue);
 	m_decision->setstate(closestate);
-	traderlog(pdate, closestate, gupid,guvalue);
+	traderlog(pdate, closestate,gupid,guvalue);
 	//销毁交易帐户，返回资金
 	m_taccount->deleteAccount(gupid);
 	return 0;
 }
 
-//日志:时间戳，操作，初始金额，总可用金额，帐户名称，帐户初始金额，帐户金额，帐户现金,股票金额，股票数
+//日志:时间戳，操作，总价值金额，总可用金额，帐户名称，帐户初始金额，帐户金额，帐户现金,股票金额，股票数,股价
 int trader::traderlog(char * pdate, int oper, char * gupid,double guvalue)
 {
+	static int init = 0;
 	char line[1000] = { 0 };
 	char*opers = "未知";
+	if (init == 0)
+	{
+		snprintf(line, 1000, "时间戳,操作,总价值金额,总可用金额,帐户名称,帐户初始金额,帐户当前市值,帐户现金,股票市值,股票数,股价");
+		m_logfp.saveline(line);
+		init = 1;
+	}
 	account *pAcc = taccount::searchAccount(gupid);
 	if (pAcc == NULL)
 	{
@@ -160,16 +167,20 @@ int trader::traderlog(char * pdate, int oper, char * gupid,double guvalue)
 	}
 	switch (oper)
 	{
-	case STATE_DEALING:
-		opers = "交易";
+	case ACCOUNT_BUY:
+		opers = "购买";
 		break;
-	case STATE_BREAKING:
+	case ACCOUNT_SELL:
+		opers = "卖出";
+		break;
+	case  ACCOUNT_CLOSE_TUPO:
 		opers = "突破退出";
 		break;
-	case STATE_STOPLOSS:
+	case ACCOUNT_CLOSE_ZHISUN:
 		opers = "止损退出";
 		break;
 	}
-	snprintf(line, 1000, "%s,%s,%f,%f,%s,%f,%f,%f,%f,%d", pdate, opers,m_taccount->getAccountTotalValue(),m_taccount->freemoney,gupid,pAcc->m_initmoney,pAcc->getAccountvalue(),pAcc->m_curmoney,pAcc->m_curgupnum*guvalue, pAcc->m_curgupnum);
+	snprintf(line, 1000, "%s,%s,%f,%f,%s,%f,%f,%f,%f,%d,%f", pdate, opers,m_taccount->getAccountTotalValue(),m_taccount->freemoney,gupid,pAcc->m_initmoney,pAcc->getAccountvalue(),pAcc->m_curmoney,pAcc->m_curgupnum*guvalue, pAcc->m_curgupnum, guvalue);
+	m_logfp.saveline(line);
 	return 0;
 }

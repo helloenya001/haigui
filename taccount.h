@@ -25,7 +25,7 @@ public:
 	int deletemoney(double money);
 	int createAccount(char*gupID);  //创建一个空股票帐户
 	int createAccount(char*gupID, double money);//创建一个带金额的帐户
-	int createAccount(char*gupID, int percent);//按照金额比例创建帐户。(可用金额+已使用金额）进行比例换算，换算后的金额<可用金额时，取可用金额。
+	int createAccountBypercent(char*gupID, double percent);//按照金额比例创建帐户。(可用金额+已使用金额）进行比例换算，换算后的金额<可用金额时，取可用金额。
 	int appendAccount(char*gupID, double moeny);//向帐户中追加金额。
 	int deleteAccount(char*gupID);//删除投资帐户，归还金额
 	double getAccountTotalValue();//获取总资产价值。

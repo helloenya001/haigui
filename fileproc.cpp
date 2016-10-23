@@ -87,11 +87,13 @@ char* fileproc::readNextline()
 
 int fileproc::saveline(char* line)
 {
+	char *back = "\r\n";
 	if (m_init != FILE_WRITE)
 	{
 		return -1;
 	}
 	m_fout << line;
+	m_fout << back;
 	return 0;
 }
 

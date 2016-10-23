@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
 
-#define  ACCOUNT_BUY  0
-#define  ACCOUNT_SELL 1
+
+
 typedef struct t_transaction
 {
 	char date[32];// 操作时间

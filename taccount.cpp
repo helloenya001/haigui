@@ -77,7 +77,7 @@ int taccount::createAccount(char * gupID, double money)
 }
 
 //百分比创建帐户。
-int taccount::createAccount(char * gupID, int percent)
+int taccount::createAccountBypercent(char * gupID, double percent)
 {
 	double money = this->totalmoney * percent;
 	return createAccount(gupID, money);

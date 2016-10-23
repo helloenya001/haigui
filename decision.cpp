@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "decision.h"
 #include "trader.h"
 #include "taccount.h"
@@ -14,11 +14,24 @@ decision::~decision()
 {
 }
 
-int decision::init(T_CONFIG config, char* gupid, int maxdealnum, trader *ptrader)
+int decision::init(T_CONFIG config, char* gupid, int maxdealnum, trader *ptrader, char* logfile)
 {
 	strcpy_s(m_gupid, gupid);
 	m_ptrade = ptrader;
 	m_config = config;
+	int ret = m_logfp.InitFile(logfile, FILE_WRITE);
+	if (ret != 0)
+	{
+		return -2;
+	}
+	return 0;
+}
+int decision::resetstate()
+{
+	m_dealingtimes = 0;
+	m_accountstate = STATE_NOACCOUNT;//交易状态
+	m_nextdealingLevel = 0.0;// 下一次投资的时机
+	m_stoploss =0.0;
 	return 0;
 }
 int decision::judgeEnter(T_OUTPUT_DATA outData)
@@ -50,15 +63,18 @@ int decision::judgeEnter(T_OUTPUT_DATA outData)
 		{
 			return -1;
 		}
+		resetstate();
 		pAcc->setcurgavlue(outData.t_org.closing);
                 m_oneToucun = pAcc->m_initmoney/m_config.mu; //一个头寸对应投资金额
                 guvalue = outData.t_org.closing;
                 gunum = (int)(m_oneToucun/guvalue);
                 m_nextdealingLevel = guvalue+ outData.n/2; //下次投入门限值
+				m_stoploss = guvalue - outData.n*m_config.sl;
 		m_accountstate = STATE_DEALING;
 		m_opernum++;
 		
 		m_ptrade->deal_notice(m_opernum, outData.t_org.timestamp, ACCOUNT_BUY, m_gupid, gunum, guvalue);
+		log(outData, ACCOUNT_BUY, m_dealingtimes, m_nextdealingLevel, gunum);
 	}
 	
 	return 0;
@@ -71,12 +87,14 @@ int decision::judgeDealing(account*pAcc, T_OUTPUT_DATA outData)
     //判断是否要退出
     if( outData.t_org.closing<outData.minten)//突破
     {
-		m_ptrade->close_account(m_opernum,outData.t_org.timestamp,pAcc->m_gupid,CLOSE_TUPO,outData.t_org.closing);
+		m_ptrade->close_account(m_opernum,outData.t_org.timestamp,pAcc->m_gupid, ACCOUNT_CLOSE_TUPO,outData.t_org.closing);
+		log(outData, ACCOUNT_CLOSE_TUPO, 0,0,0);
         return 0;
     }
-    else if( (outData.t_org.max - outData.t_org.min)/outData.n >m_config.sl ) //止损
+    else if( outData.t_org.closing < m_stoploss) //止损
     {
-		m_ptrade->close_account(m_opernum, outData.t_org.timestamp, m_gupid,CLOSE_ZHISUN,outData.t_org.closing);
+		m_ptrade->close_account(m_opernum, outData.t_org.timestamp, m_gupid, ACCOUNT_CLOSE_ZHISUN,outData.t_org.closing);
+		log(outData, ACCOUNT_CLOSE_ZHISUN, 0, 0, 0);
         return 0;
     }
     
@@ -92,10 +110,48 @@ int decision::judgeDealing(account*pAcc, T_OUTPUT_DATA outData)
         guvalue = outData.t_org.closing;
         gunum = (int)(m_oneToucun/guvalue);
         m_nextdealingLevel = guvalue+ outData.n/2; //下次投入门限值
+		m_stoploss = guvalue - outData.n*m_config.sl; //止损退出值
         m_opernum++;
 		m_ptrade->deal_notice(m_opernum, outData.t_org.timestamp, ACCOUNT_BUY, m_gupid, gunum, guvalue);
+		log(outData, ACCOUNT_BUY, m_dealingtimes,m_nextdealingLevel, gunum);
     }
     return 0;
+}
+
+// 日期,基本信息,决策值,第几次交易,下次交易门限,当前股价,交易数量
+int decision::log(T_OUTPUT_DATA to,int oper,int dealnum,double menxian, int gunum)
+{
+	static int init = 0;
+	char line[2000] = { 0 };
+	char*opers = "未知";
+	char*title = "日期,开盘,最高,最低,收盘,20日最高,50日最高,10日最低,振幅N,决策值,第几次交易,下次交易门限,止损价,当前股价,交易数量";
+	int ret = 0;
+	T_ORGIN_DATA orgin_d = to.t_org;
+	if (init == 0)
+	{
+		m_logfp.saveline(title);
+		init = 1;
+	}
+	switch (oper)
+	{
+	case ACCOUNT_BUY:
+		opers = (char*)"购买";
+		break;
+	case ACCOUNT_SELL:
+		opers = (char*)"卖出";
+		break;
+	case  ACCOUNT_CLOSE_TUPO:
+		opers = "突破退出.";
+		break;
+	case ACCOUNT_CLOSE_ZHISUN:
+		opers = "止损退出.";
+		break;
+	}
+	//基本信息
+	ret+=snprintf(line+ret,2000-ret, "%s,%.2f,%.2f,%.2f%,%.2f,%.2f,%.2f,%.2f,%.2f,", orgin_d.timestamp, orgin_d.opened, orgin_d.max, orgin_d.min, orgin_d.closing, to.p1, to.p2, to.minten, to.n);
+	ret+=snprintf(line+ret,2000-ret, "%s,%d,%f,%f,%f,%d",opers,dealnum,menxian,m_stoploss,to.t_org.closing,gunum);
+	m_logfp.saveline(line);
+	return 0;
 }
 
 
@@ -127,5 +183,6 @@ int decision::getstate()
 int decision::setstate(int state)
 {
 	m_accountstate = state;
+
 	return 0;
 }

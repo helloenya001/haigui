@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-
+#include "trader.h"
 
 #define DEFAULT_AVGM 20
 #define DEFAULT_SL   2
@@ -13,7 +13,6 @@
 #define DEFAULT_MU   4
 #define DEFAULT_TMPDIR "./"
 #define DEFAULT_LIMIT 0.01
-
 
 
 //读取参数配置
@@ -36,6 +35,8 @@ int main(int argc, char ** argv)
 	int ret = 0;
 	char *infile = NULL;
 	char *outfile = NULL;
+	char *traderlog = NULL;
+	char *desionlog = NULL;
 	T_CONFIG config;
 	/*if (argc <= 1)
 	{
@@ -46,13 +47,18 @@ int main(int argc, char ** argv)
 	*/
 	infile = "E:\\work\\develop\\vc\\haigui\\log1113.csv";
 	outfile = "E:\\work\\develop\\vc\\haigui\\log1113out.csv";
+	traderlog = "E:\\work\\develop\\vc\\haigui\\traderlog.csv";
+	desionlog = "E:\\work\\develop\\vc\\haigui\\desionlog.csv";
 	//初始化配置
 	printf("init config\n");
 	initConig(&config);
 
 	//mode1 基本数据计算
 	BaseDataProc(config, infile, outfile);
-	
+	trader ctrader;
+	ctrader.init(config, outfile, traderlog, desionlog, "A");
+	ctrader.addmoney(10000000);
+	ctrader.proc();
 
     return 0;
 }

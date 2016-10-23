@@ -13,6 +13,8 @@
 
 #define  ACCOUNT_BUY  0
 #define  ACCOUNT_SELL 1
+#define  ACCOUNT_CLOSE_TUPO   2 //突破退出
+#define  ACCOUNT_CLOSE_ZHISUN 3 //止损退出
 
 using namespace std;
 
